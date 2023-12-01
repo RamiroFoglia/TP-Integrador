@@ -30,90 +30,104 @@ public class Cliente {
     final LocalDate altaCliente = LocalDate.now();
 
     public static Cliente altaCliente() {
-        boolean validaEntrada = true;
+        boolean validaEntrada = true, existeCliente = true;
         Scanner entrada = new Scanner(System.in);
         String cuit = "", razonSoc = "", nom = "", ape = "", dir = "", cel = "", mail = "";
 
         System.out.println("\n*****INGRESE LOS SIGUIENTES DATOS DEL CLIENTE*****");
         System.out.println("***********RESPETANDO LAS INDICACIONES*************");
+//        
         while (validaEntrada) {
-            System.out.println("CUIT del Cliente: ");
+            System.out.println("Ingrese el CUIT del Cliente: ");
             cuit = entrada.nextLine();
-            if (cuit.isEmpty() || cuit.length() != 11) {
-                validaEntrada = true;
-            } else {
+
+            if (!(cuit.isEmpty()) && (cuit.length() == 11)) {
+                if ((ConexionDB.existeCuitCliente(cuit))) {
+                    System.out.println("[El cuit ya se encuentra registrado en el sistema]");
+                    existeCliente = false;
+                }
                 validaEntrada = false;
             }
         }
-        while (validaEntrada) {
-            System.out.println("Razon social del cliente: ");
-            razonSoc = entrada.nextLine();
-            if (razonSoc.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+        if (existeCliente) {//SI NO EXISTE EL CLIENTE SIGUE CON LA CARGA DEL RESTO DE LOS DATOS
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese la Razon Social del Cliente: ");
+                razonSoc = entrada.nextLine();
+                if (razonSoc.isEmpty()) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
-        }
-        while (validaEntrada) {
-            System.out.println("Nombre del cliente: ");
-            nom = entrada.nextLine();
-            if (nom.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese el nombre: ");
+                ape = entrada.nextLine();
+                if (ape.isEmpty()) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
-        }
-        while (validaEntrada) {
-            System.out.println("Apellido del cliente: ");
-            ape = entrada.nextLine();
-            if (ape.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese el apellido: ");
+                ape = entrada.nextLine();
+                if (ape.isEmpty()) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
-        }
-        while (validaEntrada) {
-            System.out.println("Direccion del cliente: ");
-            dir = entrada.nextLine();
-            if (dir.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese la direccion: ");
+                dir = entrada.nextLine();
+                if (dir.isEmpty()) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
-        }
-        while (validaEntrada) {
-            System.out.println("Numero de celular del cliente: ");
-            cel = entrada.nextLine();
-            if (cel.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese el numero de telefono: ");
+                cel = entrada.nextLine();
+                if (cel.isEmpty() || !(cel.length() == 13)) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
-        }
-        while (validaEntrada) {
-            System.out.println("E-mail del cliente: ");
-            mail = entrada.nextLine();
-            if (mail.isEmpty()) {
-                validaEntrada = true;
-            } else {
-                validaEntrada = false;
+
+            validaEntrada = true;
+            while (validaEntrada) {
+                System.out.println("Ingrese el E-mail: ");
+                mail = entrada.nextLine();
+                if (mail.isEmpty()) {
+                    validaEntrada = true;
+                } else {
+                    validaEntrada = false;
+                }
             }
+
+            Cliente nuevoCli = new Cliente(1, cuit, razonSoc, nom, ape, dir, cel, mail);
+            return nuevoCli;
         }
 
-        System.out.println();
-
-        Cliente cliente1 = new Cliente(1, cuit, razonSoc, nom, ape, dir, cel, mail);
-
-        return cliente1;
+        return null;
     }
 
-    public static boolean extisteCliente() {
+    public static boolean eextisteCliente() {
 
         Scanner entrada = new Scanner(System.in);
         System.out.println("Ingrese el Cuit del cliente: ");
         String cuitCliente = entrada.nextLine();
 
-        return ConexionDB.extisteCuitCliente(cuitCliente);
+        return ConexionDB.existeCuitCliente(cuitCliente);
     }
 
 }

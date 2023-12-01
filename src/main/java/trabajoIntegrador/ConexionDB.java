@@ -29,7 +29,7 @@ public class ConexionDB {
 
     }
 
-//***********************ALTA CLIENTE  
+    //ALTA CLIENTE  
     public static void altaClienteDB(Cliente cli) {
         //validar que el cuit no exista -tambien se podria validar el contrato(codSoporte)
         String consulta = "insert into cliente(idCli,cuit,razonS,nom,ape,dire,cel,mail,altaCliente)"
@@ -48,7 +48,7 @@ public class ConexionDB {
 
             sqlUp.executeUpdate();
 
-            System.out.println("La DB/TABLA CLIENTE se actualizo con exito");
+            System.out.println("¡¡Alta de cliente exitosa!!");
 
         } catch (SQLException obj) {
             System.out.println("Error en el insert de la tabla Cliente" + obj);
@@ -57,8 +57,8 @@ public class ConexionDB {
 
     }
 
-//     Buscar cliente por cuit
-    public static boolean extisteCuitCliente(String cuitCliente) {
+    //BUSCAR CLIENTE POR CUIT
+    public static boolean existeCuitCliente(String cuitCliente) {
         boolean estado = false;
         String consulta = String.format("select * from cliente where cuit = %s", cuitCliente);
         ResultSet rs;
@@ -78,7 +78,7 @@ public class ConexionDB {
         return estado;
     }
 
-    //metodo que recibe un cuit como parametro y devuelve el id de ese cliente
+    //METODO QUE RECIBE UN CUIT Y DEVUELCE EL ID DEL CLIENTE
     public static int idCliente(String cuitCliente) {
         int idcli = 0;
         String consulta = String.format("select * from cliente where cuit = %s", cuitCliente);
@@ -99,9 +99,8 @@ public class ConexionDB {
         return idcli;
     }
 
-    //*************ALTA EMPLEADO
+    //ALTA EMPLEADO
     public static void altaEmpleadoDB(Empleado emp1) {
-        //validar que el cuit no exista
 
         String consulta = "insert into Empleado(idEmpleado,cuitEmpleado,nomEmpleado,apeEmpleado,direEmpleado"
                 + ",celEmpleado,mailEmpleado,altaEmpleado,areaEmpleado) values (idEmpleado,?,?,?,?,?,?,?,?)";
@@ -125,10 +124,29 @@ public class ConexionDB {
             System.out.println("Error en el insert de la tabla Empleado" + obj);
             obj.fillInStackTrace();
         }
-
     }
-//******************LISTAR SOPORTE
 
+    //BUSCAR EMPLEADO POR CUIT
+    public static boolean existeCuitEmpleado(String cuitEmp) {
+        boolean estado = false;
+        String consulta = String.format("select * from empleado where cuitEmpleado = %s", cuitEmp);
+        ResultSet rs;
+
+        try {
+            rs = sT.executeQuery(consulta);
+
+            if (rs.next()) {
+                estado = true;
+            }
+
+        } catch (SQLException obj) {
+            System.out.println("Error al buscar cliente por cuit" + obj);
+            obj.fillInStackTrace();
+        }
+        return estado;
+    }
+
+    //LISTAR SOPORTE
     public static void listarEmpleado() {
 
         String consulta = "select * from empleado";
@@ -146,15 +164,14 @@ public class ConexionDB {
                         + "\t" + sql.getString(9));
             }
             System.out.println("=====================================================================================================\n");
-//            System.out.println(sql.getInt(1) + "\t " + sql.getString(2) + "\t" + sql.getString(3)
-//                    + "\t    " + sql.getString(4) + "\t" + sql.getString(6) + "\t" + sql.getString(7) + "\t" + sql.getString(9));
+
         } catch (SQLException e) {
             System.out.println("Error en el select de la tabla EMPLEADO" + e);
             e.printStackTrace();
         }
     }
 
-//*********************ALTA TECNICO
+    //ALTA TECNICO
     public static void altaTecnicoDB(Tecnico tec1) {
 
         String consulta = "insert into Tecnico(idTecnico,cuitEmpleado,tituloTecnico,dispoTecnico,altaTecnico,estadoTecnico) values (idTecnico,?,?,?,?,?)";
@@ -178,8 +195,8 @@ public class ConexionDB {
         }
 
     }
-    
-    //metodo para mostrar los tecnicos
+
+    //LISTAR TECNICOS
     public static void listarTecnico() {
 
         String consulta = "select * from tecnico";
@@ -196,15 +213,13 @@ public class ConexionDB {
             }
             System.out.println("===================================================================================");
         } catch (SQLException e) {
-            System.out.println("Error al consultar la tabla tecnicos: " + e);            
+            System.out.println("Error al consultar la tabla tecnicos: " + e);
             e.printStackTrace();
         }
-    
-    }
-    
-    
 
-    //*********validar cuit empleado
+    }
+
+    //VALIDAR CUIT EMPLEADO
     public static boolean validarCuitEmpleado(String cuitEmp) {
         String consulta = String.format("select * from empleado where cuitEmpleado = %s", cuitEmp);
         ResultSet sql;
@@ -237,9 +252,9 @@ public class ConexionDB {
         return false;
     }
 
-//****************ALTA SOPORTE
+    //ALTA SOPORTE
     public static void altaSoporteDB(SoporteServicio sop1) {
-//validad que el cuit no exista
+
         String consulta = "insert into soporte(idSoporte,codSoporte,tipoSoporte,desSoporte,altaSoporte,tmpRespSoporte,complejidadSoporte,estadoSoporte) values (idSoporte,?,?,?,?,?,?,?)";
 
         try {
@@ -263,8 +278,8 @@ public class ConexionDB {
         }
 
     }
-//******************LISTAR SOPORTE
 
+    //LISTAR SOPORTE
     public static void listarSoporte() {
 
         String consulta = "select * from soporte";
@@ -288,7 +303,7 @@ public class ConexionDB {
 
     }
 
-//**********************ALTA INCIDENTE
+    //ALTA INCIDENTE
     public static void altaIncidenteDB(Incidente inc1) {
 
         String consulta = "insert into incidente(idIncidente,idEmpleado,idCliente,idSoporte,idTecnico,altaIncidente,fechaResolucion,horaColchon,estadoIncidente)"
