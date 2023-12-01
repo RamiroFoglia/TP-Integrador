@@ -41,12 +41,9 @@ public class SoporteServicio {
         String tiempoReso = entrada.nextLine();
         System.out.println("ESTADO DISPONIBLE/NO DISPONIBLE: ");
         String estado = entrada.nextLine();
-
-        //-----------ESTA LINEA HAY QUE ELIMINAR, SOLO ESTÁ PARA CONTROL EN DESARROLLO
+        
         SoporteServicio sop1 = new SoporteServicio(1, codSoporte, tipo, descripcion, tiempoReso, complejidad, estado);
-
-        //System.out.println(sop1.toString());
-        entrada.close();
+        
         return sop1;
     }
 

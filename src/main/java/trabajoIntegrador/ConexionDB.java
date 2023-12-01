@@ -20,7 +20,7 @@ public class ConexionDB {
             conX = DriverManager.getConnection("jdbc:mysql://localhost:3306/db-soporte-incidente", "root", "");
             sT = conX.createStatement();
             return conX;
-        } catch (Exception obj) {
+        } catch (SQLException obj) {
 
             System.out.println("Error en la conexion de la base de datos" + obj);
             System.out.println(obj.fillInStackTrace());
@@ -32,9 +32,8 @@ public class ConexionDB {
 //***********************ALTA CLIENTE  
     public static void altaClienteDB(Cliente cli) {
         //validar que el cuit no exista -tambien se podria validar el contrato(codSoporte)
-        String consulta = "insert into cliente(idCli,cuit,razonS,nom,ape,dire,cel,mail,contrato,altaCliente)"
-                + " values (idCli,?,?,?,?,?,?,?,?,?)";
-
+        String consulta = "insert into cliente(idCli,cuit,razonS,nom,ape,dire,cel,mail,altaCliente)"
+                + " values (idCli,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement sqlUp = conX.prepareStatement(consulta);
 
@@ -45,8 +44,7 @@ public class ConexionDB {
             sqlUp.setString(5, cli.getDireCliente());
             sqlUp.setString(6, cli.getCelCliente());
             sqlUp.setString(7, cli.getMailCliente());
-            sqlUp.setString(8, cli.getContratos());
-            sqlUp.setString(9, LocalDate.now().toString());
+            sqlUp.setString(8, LocalDate.now().toString());
 
             sqlUp.executeUpdate();
 
@@ -57,6 +55,48 @@ public class ConexionDB {
             obj.fillInStackTrace();
         }
 
+    }
+
+//     Buscar cliente por cuit
+    public static boolean extisteCuitCliente(String cuitCliente) {
+        boolean estado = false;
+        String consulta = String.format("select * from cliente where cuit = %s", cuitCliente);
+        ResultSet rs;
+
+        try {
+            rs = sT.executeQuery(consulta);
+
+            if (rs.next()) {
+                estado = true;
+            }
+
+        } catch (SQLException obj) {
+            System.out.println("Error al buscar cliente por cuit" + obj);
+            obj.fillInStackTrace();
+        }
+
+        return estado;
+    }
+
+    //metodo que recibe un cuit como parametro y devuelve el id de ese cliente
+    public static int idCliente(String cuitCliente) {
+        int idcli = 0;
+        String consulta = String.format("select * from cliente where cuit = %s", cuitCliente);
+        ResultSet rs;
+
+        try {
+            rs = sT.executeQuery(consulta);
+
+            if (rs.next()) {
+                idcli = rs.getInt(1);
+
+            }
+
+        } catch (SQLException obj) {
+            System.out.println("Error al buscar cliente por cuit" + obj);
+            obj.fillInStackTrace();
+        }
+        return idcli;
     }
 
     //*************ALTA EMPLEADO
@@ -96,14 +136,18 @@ public class ConexionDB {
         ResultSet sql;
         try {
             sql = sT.executeQuery(consulta);
-            System.out.println("campos EMPELADO agregar y dejar bonito");
+
+            System.out.println("\n======================================= LISTADO DE EMPLEADOS =======================================");
+            System.out.println("[ID]   [CUIT]        [NOMBRE]    [APALLIDO]     [CELULAR]       [EMAIL]\t\t\t[AREA]");
             while (sql.next()) {
 
-                System.out.println(sql.getInt(1) + "\t" + sql.getString(2) + "\t" + sql.getString(3)
-                        + "\t" + sql.getString(4) + sql.getString(5) + "\t" + sql.getString(6) + sql.getString(7) + "\t" + sql.getString(8));
-
+                System.out.println(sql.getInt(1) + "     " + sql.getString(2) + "   " + sql.getString(3)
+                        + "\t  " + sql.getString(4) + "\t" + sql.getString(6) + "\t" + sql.getString(7)
+                        + "\t" + sql.getString(9));
             }
-
+            System.out.println("=====================================================================================================\n");
+//            System.out.println(sql.getInt(1) + "\t " + sql.getString(2) + "\t" + sql.getString(3)
+//                    + "\t    " + sql.getString(4) + "\t" + sql.getString(6) + "\t" + sql.getString(7) + "\t" + sql.getString(9));
         } catch (SQLException e) {
             System.out.println("Error en el select de la tabla EMPLEADO" + e);
             e.printStackTrace();
@@ -113,28 +157,52 @@ public class ConexionDB {
 //*********************ALTA TECNICO
     public static void altaTecnicoDB(Tecnico tec1) {
 
-        String consulta = "insert into Tecnico(idTecnico,cuitEmpleado,codSoporte,tituloTecnico,dispoTecnico,altaTecnico,estadoTecnico) values (idTecnico,?,?,?,?,?,?)";
+        String consulta = "insert into Tecnico(idTecnico,cuitEmpleado,tituloTecnico,dispoTecnico,altaTecnico,estadoTecnico) values (idTecnico,?,?,?,?,?)";
 
         try {
             PreparedStatement sqlUp = conX.prepareStatement(consulta);
 
             sqlUp.setString(1, tec1.getCuitEmpleado());
-            sqlUp.setString(2, tec1.getCodSoporte());
-            sqlUp.setString(3, tec1.getTituloTecnico());
-            sqlUp.setString(4, tec1.getDispoTecnico());
-            sqlUp.setString(5, LocalDate.now().toString());
-            sqlUp.setString(6, tec1.getEstadoTecnico());
+            sqlUp.setString(2, tec1.getTituloTecnico());
+            sqlUp.setString(3, tec1.getDispoTecnico());
+            sqlUp.setString(4, LocalDate.now().toString());
+            sqlUp.setString(5, tec1.getEstadoTecnico());
 
             sqlUp.executeUpdate();
 
             System.out.println("La DB/TABLA TECNICO se actualizo con exito");
 
         } catch (SQLException obj) {
-            System.out.println("Error en el insert de la tabla Tecnico" + obj);
+            System.out.println("Error en el insert de la tabla Tecnico: " + obj);
             obj.fillInStackTrace();
         }
 
     }
+    
+    //metodo para mostrar los tecnicos
+    public static void listarTecnico() {
+
+        String consulta = "select * from tecnico";
+
+        ResultSet sql;
+        try {
+            sql = sT.executeQuery(consulta);
+            System.out.println("\n============================== LISTADO DE TECNICOS ==============================");
+            System.out.println("[ID]    [CUIT]           [ESTADO]");
+            while (sql.next()) {
+
+                System.out.println(sql.getInt(1) + "\t" + sql.getString(2) + "\t  " + sql.getString(6));
+
+            }
+            System.out.println("===================================================================================");
+        } catch (SQLException e) {
+            System.out.println("Error al consultar la tabla tecnicos: " + e);            
+            e.printStackTrace();
+        }
+    
+    }
+    
+    
 
     //*********validar cuit empleado
     public static boolean validarCuitEmpleado(String cuitEmp) {
@@ -199,18 +267,19 @@ public class ConexionDB {
 
     public static void listarSoporte() {
 
-        String consulta = "select * from SOPORTE";
+        String consulta = "select * from soporte";
 
         ResultSet sql;
         try {
             sql = sT.executeQuery(consulta);
-            System.out.println("campos soporte agregar y dejar bonito");
+            System.out.println("\n============================== LISTADO DE SOPORTES ==============================");
+            System.out.println("[ID]   [CODIGO]   [TIPO]   [ESTADO]\t  [DESCRIPCION]");
             while (sql.next()) {
 
-                System.out.println(sql.getInt(1) + "\t" + sql.getString(2) + "\t" + sql.getString(3) + "\t" + sql.getString(4) + sql.getString(5) + "\t" + sql.getString(6) + sql.getString(7) + "\t" + sql.getString(8));
+                System.out.println(sql.getInt(1) + "\t" + sql.getString(2) + "\t  " + sql.getString(3) + "\t    " + sql.getString(8) + "\t   " + sql.getString(4));
 
             }
-
+            System.out.println("===================================================================================");
         } catch (SQLException e) {
             System.out.println("Error en el INSERT de la tabla SOPORTE" + e);
             // TODO Auto-generated catch block
