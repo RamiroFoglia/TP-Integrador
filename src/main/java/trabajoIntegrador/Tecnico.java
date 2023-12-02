@@ -25,7 +25,8 @@ public class Tecnico {
 
         System.out.println("*****INGRESE LOS SIGUIENTES DATOS DEL TECNICO*****");
         System.out.println("***********RESPETANDO LAS INDICACIONES*************");
-
+        
+        ConexionDB.listarEmpleado();
         while (valida) {
             System.out.println("CUIT del OPERADOR(empleado): ");
             cuitEmp = entrada.nextLine();

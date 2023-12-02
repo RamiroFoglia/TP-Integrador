@@ -2,6 +2,10 @@ package trabajoIntegrador;
 
 import java.util.Scanner;
 
+/**
+ *
+ * @author Ramiro Foglia
+ */
 public class ABM {
 
     public static void menuEmpleado() {

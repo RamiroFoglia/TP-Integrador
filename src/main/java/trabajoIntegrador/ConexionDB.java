@@ -31,7 +31,6 @@ public class ConexionDB {
 
     //ALTA CLIENTE  
     public static void altaClienteDB(Cliente cli) {
-        //validar que el cuit no exista -tambien se podria validar el contrato(codSoporte)
         String consulta = "insert into cliente(idCli,cuit,razonS,nom,ape,dire,cel,mail,altaCliente)"
                 + " values (idCli,?,?,?,?,?,?,?,?)";
         try {
@@ -55,6 +54,41 @@ public class ConexionDB {
             obj.fillInStackTrace();
         }
 
+    }
+
+    public static void contratosCliente(int idCliente) {
+//        List<> listaContratos = new ArrayList<>();
+
+        String consulta = String.format("select nom, ape from cliente where idCli = %s", idCliente);
+        ResultSet rs;
+
+        try {
+            rs = sT.executeQuery(consulta);
+
+            if (rs.next()) {
+                System.out.println("[CONTRATOS del cliente: " + rs.getString(2) + ", " + rs.getString(1) + "]");
+
+                String consulta2 = String.format("select codSoporte, desSoporte, estadoSoporte"
+                        + " from soporte S, clientecontrato CC where "
+                        + "S.idSoporte = CC.idSoporte and CC.idCliente = %s", idCliente);
+                ResultSet rs2;
+                try {
+                    rs2 = sT.executeQuery(consulta2);
+                    System.out.println("\t[CODIGO]\t[ESTADO]\t[DESCRIPCION]");
+                    while (rs2.next()) {
+                        System.out.println("\t" + rs2.getString(1) + "\t\t" + rs2.getString(3) + "\t" + rs2.getString(2));
+                    }
+                    System.out.println("");
+                } catch (SQLException obj) {
+                    System.out.println("Error al buscar contratos del cliente " + obj);
+                    obj.fillInStackTrace();
+                }
+            }
+
+        } catch (SQLException obj) {
+            System.out.println("Error al buscar el cliente para mostrar los contratos " + obj);
+            obj.fillInStackTrace();
+        }
     }
 
     //BUSCAR CLIENTE POR CUIT
@@ -81,7 +115,7 @@ public class ConexionDB {
     //METODO QUE RECIBE UN CUIT Y DEVUELCE EL ID DEL CLIENTE
     public static int idCliente(String cuitCliente) {
         int idcli = 0;
-        String consulta = String.format("select * from cliente where cuit = %s", cuitCliente);
+        String consulta = String.format("select idCli from cliente where cuit = %s", cuitCliente);
         ResultSet rs;
 
         try {
@@ -97,6 +131,30 @@ public class ConexionDB {
             obj.fillInStackTrace();
         }
         return idcli;
+    }
+
+    //LISTAR CLIENTES
+    public static void listarCliente() {
+
+        String consulta = "select * from cliente";
+
+        ResultSet sql;
+        try {
+            sql = sT.executeQuery(consulta);
+            System.out.println("\n============================== LISTADO DE CLIENTES ==============================");
+            System.out.println("[ID]\t[CUIT]\t\t[NOMBRE]\t[APELLIDO]\t[RAZON SOCIAL]");
+            while (sql.next()) {
+
+                System.out.println(sql.getInt(1) + "\t" + sql.getString(2) + "\t" + sql.getString(4)
+                        + "\t\t" + sql.getString(5) + "\t\t" + sql.getString(3));
+
+            }
+            System.out.println("===================================================================================");
+        } catch (SQLException e) {
+            System.out.println("Error al consultar la tabla Clientes: " + e);
+            e.printStackTrace();
+        }
+
     }
 
     //ALTA EMPLEADO
@@ -146,7 +204,7 @@ public class ConexionDB {
         return estado;
     }
 
-    //LISTAR SOPORTE
+    //LISTAR EMPLEADOS
     public static void listarEmpleado() {
 
         String consulta = "select * from empleado";
@@ -249,7 +307,7 @@ public class ConexionDB {
             System.out.println("Error en la busqueda de Empleado" + e);
             e.printStackTrace();
         }
-        return false;
+        return resultado;
     }
 
     //ALTA SOPORTE
@@ -327,6 +385,26 @@ public class ConexionDB {
 
         } catch (SQLException obj) {
             System.out.println("Error en el insert de la tabla Incidente" + obj);
+            obj.fillInStackTrace();
+        }
+
+    }
+
+    //ALTA CONTRATOCLIENTE
+    static void altaContratoClienteDB(Incidente inc1) {
+        String consulta = "insert into clientecontrato(idCliente, idSoporte, altaContrato) values (?,?,?)";
+
+        try {
+            PreparedStatement sqlUp = conX.prepareStatement(consulta);
+
+            sqlUp.setInt(1, inc1.getIdCliente());
+            sqlUp.setInt(2, inc1.getIdSoporte());
+            sqlUp.setString(3, LocalDate.now().toString());
+
+            sqlUp.executeUpdate();
+
+        } catch (SQLException obj) {
+            System.out.println("Error en el insert de la tabla ContratoCliente: " + obj);
             obj.fillInStackTrace();
         }
 

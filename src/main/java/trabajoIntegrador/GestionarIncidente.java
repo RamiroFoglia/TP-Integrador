@@ -2,7 +2,10 @@ package trabajoIntegrador;
 
 import java.util.Scanner;
 
-
+/**
+ *
+ * @author Ramiro Foglia
+ */
 public class GestionarIncidente {
     public static void iniciarGestion() {
         Cliente cliente = new Cliente();
@@ -27,8 +30,8 @@ public class GestionarIncidente {
                 System.out.println("[ El cliente ya se encuentra registrado ]\n");
                 idCliente = ConexionDB.idCliente(cuitCliente);//recupero el id del cliente que esta reportando un incidente 
             } else {
-                System.out.println("\n[ El cuit del Cliente no se encuentra registrado en el sistema ]\n"
-                        + "[ Se dara de alta al cliente ]\n");
+                System.out.println("\n[ El Cliente no se encuentra registrado en el sistema ]\n"
+                        + "[ Se lo dara de alta continuación ]\n");
                 cliente = Cliente.altaCliente();
                 ConexionDB.altaClienteDB(cliente);
                 idCliente = cliente.getIdCliente();//Guardo el id del cliente para instanciar el incidente(cliente nuevo)
@@ -41,7 +44,7 @@ public class GestionarIncidente {
             //FALTARIA VALIDAR LA OPCION QUE SE ELIGE...
 
             //Se elije el tecnico para el incidente 
-            System.out.println("\n==>>Asignar Tecnico para el contrarto en cuestion:");
+            System.out.println("\n==>>Asignar Tecnico para el contrato en cuestion:");
             ConexionDB.listarTecnico();
             System.out.println("\n==>> Elegir un Técnico:(mediante el ID): ");
             idTecnico = Integer.parseInt(entrada.nextLine());
@@ -50,9 +53,11 @@ public class GestionarIncidente {
             //*******Instancia un incidente nvo
             Incidente inc1 = Incidente.altaIncidente(idEmp, idCliente, idSoporte, idTecnico);
             ConexionDB.altaIncidenteDB(inc1);
+            ConexionDB.altaContratoClienteDB(inc1);
+            
 
-            System.out.println("\n\t[ **** La incidencia se registro exitosamente.... **** ]/");
-            System.out.println("\n[ La fecha estimado de resolucion es:  " + inc1.getFechaResolucion() + " ]\n\n");
+            System.out.println("\n\t[ **** Registro exito.... **** ]");
+            System.out.println("\n[ La fecha estimada de resolucion es:  " + inc1.getFechaResolucion() + " ]\n\n");
 
         } catch (Exception obj) {
 

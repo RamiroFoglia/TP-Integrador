@@ -36,7 +36,7 @@ public class Empleado {
         System.out.println("*****INGRESE LOS SIGUIENTES DATOS DEL EMPLEADO*****");
         System.out.println("***********RESPETANDO LAS INDICACIONES*************");
         while (validaEntrada) {
-            System.out.println("Ingrese el CUIT del Empleado: ");
+            System.out.println("Ingrese el CUIT: ");
             cuit = entrada.nextLine();
 
             if (!(cuit.isEmpty()) && (cuit.length() == 11)) {
@@ -51,7 +51,7 @@ public class Empleado {
         if (existeEmpleado) {//SI NO EXISTE EL EMPLEADO SIGUE CON LA CARGA DEL RESTO DE LOS DATOS
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese el NOMBRE del Empleado: ");
+                System.out.println("Ingrese el NOMBRE: ");
                 nom = entrada.nextLine();
                 if (nom.isEmpty()) {
                     validaEntrada = true;
@@ -62,7 +62,7 @@ public class Empleado {
 
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese el APELLIDO del Empleado: ");
+                System.out.println("Ingrese el APELLIDO: ");
                 ape = entrada.nextLine();
                 if (ape.isEmpty()) {
                     validaEntrada = true;
@@ -72,7 +72,7 @@ public class Empleado {
             }
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese la DIRECCION del Empleado: ");
+                System.out.println("Ingrese la DIRECCION: ");
                 dire = entrada.nextLine();
                 if (dire.isEmpty()) {
                     validaEntrada = true;
@@ -83,7 +83,7 @@ public class Empleado {
 
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese el CELULAR del Empleado: ");
+                System.out.println("Ingrese el CELULAR: ");
                 cel = entrada.nextLine();
                 if (cel.isEmpty() || !(cel.length() == 13)) {
                     validaEntrada = true;
@@ -93,7 +93,7 @@ public class Empleado {
             }
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese el MAIL del Empleado: ");
+                System.out.println("Ingrese el MAIL: ");
                 mail = entrada.nextLine();
                 if (mail.isEmpty()) {
                     validaEntrada = true;

@@ -2,6 +2,10 @@ package trabajoIntegrador;
 
 import java.util.Scanner;
 
+/**
+ *
+ * @author Ramiro Foglia
+ */
 public class Principal {
 
     public static void main(String[] args) {
@@ -21,8 +25,10 @@ public class Principal {
                 System.out.println("[Para seleccionar una opcion, elija su numero correspondiente]");
                 System.out.println("\n 1- <<ABM Empleados>>");
                 System.out.println(" 2- <<ABM Clientes>>");
-                System.out.println(" 3- <<Gestionar Incidente>>");
-                System.out.println(" 4- <<Salir>>");
+                System.out.println(" 3- <<Alta de Tecnicos>>");
+                System.out.println(" 4- <<Gestionar Incidente>>");
+                System.out.println(" 5- <<Mostrar contratos de un cliente>>");
+                System.out.println(" 6- <<Salir>>");
 
                 opcion = entrada.nextInt();
 
@@ -34,10 +40,21 @@ public class Principal {
                         ABM.menuCliente();
                         break;
                     case 3:
+                        ConexionDB.listarTecnico();
+                        Tecnico tec1 = Tecnico.altaTecnico();
+                        ConexionDB.altaTecnicoDB(tec1);                        
+                        break;
+                    case 4:
                         //ciclo de vida del incidente
                         GestionarIncidente.iniciarGestion();
                         break;
-                    case 4:
+                    case 5:
+                        ConexionDB.listarCliente();
+                        System.out.println("Seleccionar un cliente(ID): ");
+                        int idCl = entrada.nextInt();
+                        ConexionDB.contratosCliente(idCl);
+                        break;
+                    case 6:
                         //Termina el ciclo del menu del sistema
                         validarMenu = false;
                         break;

@@ -9,14 +9,15 @@ import java.util.Scanner;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class Cliente {
 
     int idCliente;
@@ -52,7 +53,7 @@ public class Cliente {
         if (existeCliente) {//SI NO EXISTE EL CLIENTE SIGUE CON LA CARGA DEL RESTO DE LOS DATOS
             validaEntrada = true;
             while (validaEntrada) {
-                System.out.println("Ingrese la Razon Social del Cliente: ");
+                System.out.println("Ingrese la Razon Social: ");
                 razonSoc = entrada.nextLine();
                 if (razonSoc.isEmpty()) {
                     validaEntrada = true;
@@ -64,8 +65,8 @@ public class Cliente {
             validaEntrada = true;
             while (validaEntrada) {
                 System.out.println("Ingrese el nombre: ");
-                ape = entrada.nextLine();
-                if (ape.isEmpty()) {
+                nom = entrada.nextLine();
+                if (nom.isEmpty()) {
                     validaEntrada = true;
                 } else {
                     validaEntrada = false;
@@ -115,6 +116,7 @@ public class Cliente {
             }
 
             Cliente nuevoCli = new Cliente(1, cuit, razonSoc, nom, ape, dir, cel, mail);
+//              Cliente nuevoCli = new Cliente(0, razonSoc);
             return nuevoCli;
         }
 
