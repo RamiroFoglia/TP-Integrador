@@ -29,12 +29,11 @@ public class ABM {
                     }
 
                     break;
-                //                Empleado modificarEmp = Empleado.modificaerEmpleado(); // hacer metodo modificarEmpleado() en la clase Empleado
-//                ConexionDB.modificarEmpleadoDB(modificarEmp); //Hacer el metodo modificarEmpleadoDB() en la clase ConexionDB
                 case 2:
+                    System.out.println("ME FALTO TIEMPO PARA HACER LOS UPDATE, PERDON PROFE :-)");
                     break;
-                // logica de eliminar un empleado
                 case 3:
+                    Empleado.eliminarEmpleado();
                     break;
                 case 4:
                     validar = false;
@@ -46,8 +45,6 @@ public class ABM {
         }
     }
 
-    
-    
     static void menuCliente() {
         Scanner entrada = new Scanner(System.in);
         int opcion = 0;
@@ -67,12 +64,11 @@ public class ABM {
                         ConexionDB.altaClienteDB(nuevocli);
                     }
                     break;
-                //                Empleado modificarEmp = Empleado.modificaerEmpleado(); // hacer metodo modificarEmpleado() en la clase Empleado
-//                ConexionDB.modificarEmpleadoDB(modificarEmp); //Hacer el metodo modificarEmpleadoDB() en la clase ConexionDB
                 case 2:
+                    System.out.println("ME FALTO TIEMPO PARA HACER LOS UPDATE, PERDON PROFE :-)");
                     break;
-                // logica de eliminar un cliente
                 case 3:
+                    Cliente.eliminarCliente();
                     break;
                 case 4:
                     validar = false;

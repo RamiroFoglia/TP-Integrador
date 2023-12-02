@@ -410,4 +410,36 @@ public class ConexionDB {
 
     }
 
+    //ELIMINAR UN CLIENTE
+    static void eliminarClienteDB(String cuitCliente) {
+        String consulta = String.format("delete from cliente where cuit = %s", cuitCliente);
+        try {
+            PreparedStatement sqlUp = conX.prepareStatement(consulta);
+            sqlUp.executeUpdate();
+
+            System.out.println("******** Registro eliminado exitosamente********\n");
+
+        } catch (SQLException obj) {
+            System.out.println("Error al eliminar un cliente: " + obj);
+            obj.fillInStackTrace();
+        }
+
+    }
+
+    //ELIMINAR UN EMPLEADO
+    static void eliminarEmpleadoDB(String cuitEmpleado) {
+        String consulta = String.format("delete from empleado where cuitEmpleado = %s", cuitEmpleado);
+        try {
+            PreparedStatement sqlUp = conX.prepareStatement(consulta);
+            sqlUp.executeUpdate();
+
+            System.out.println("******** Registro eliminado exitosamente********\n");
+
+        } catch (SQLException obj) {
+            System.out.println("Error al eliminar un empleado: " + obj);
+            obj.fillInStackTrace();
+        }
+
+    }
+
 }

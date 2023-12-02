@@ -118,4 +118,24 @@ public class Empleado {
         }
         return null;
     }
+
+    //DELETE EMPLEADO
+    public static void eliminarEmpleado() {
+        Scanner entrada = new Scanner(System.in);
+        String cuitEmpleado = "";
+        boolean validar = true;
+
+        ConexionDB.listarEmpleado();
+
+        while (validar) {
+            System.out.println("\n\t [INGRESE EL CUIT DEL EMPLEADO A ELIMINAR]");
+            cuitEmpleado = entrada.nextLine();
+
+            if (ConexionDB.existeCuitEmpleado(cuitEmpleado)) {
+                ConexionDB.eliminarEmpleadoDB(cuitEmpleado);
+                validar = false;
+            }
+        }
+        // FALTARIA VALIDAR LAS TABLAS LAS CUALES TENGAN RELACION CON EL EMPLEADO A ELIMINAR
+    }
 }

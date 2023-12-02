@@ -2,16 +2,12 @@ package trabajoIntegrador;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Data
@@ -116,7 +112,7 @@ public class Cliente {
             }
 
             Cliente nuevoCli = new Cliente(1, cuit, razonSoc, nom, ape, dir, cel, mail);
-//              Cliente nuevoCli = new Cliente(0, razonSoc);
+
             return nuevoCli;
         }
 
@@ -132,4 +128,22 @@ public class Cliente {
         return ConexionDB.existeCuitCliente(cuitCliente);
     }
 
+    public static void eliminarCliente() {
+        Scanner entrada = new Scanner(System.in);
+        String cuitCliente = "";
+        boolean validar = true;
+
+        ConexionDB.listarCliente();
+
+        while (validar) {
+            System.out.println("\n\t [INGRESE EL CUIT DEL CLIENTE A ELIMINAR]");
+            cuitCliente = entrada.nextLine();
+
+            if (ConexionDB.existeCuitCliente(cuitCliente)) {
+                ConexionDB.eliminarClienteDB(cuitCliente);
+                validar = false;
+            }
+        }
+        // FALTARIA VALIDAR LAS TABLAS LAS CUALES TENGAN RELACION CON EL CLIENTE A ELIMINAR
+    }
 }
